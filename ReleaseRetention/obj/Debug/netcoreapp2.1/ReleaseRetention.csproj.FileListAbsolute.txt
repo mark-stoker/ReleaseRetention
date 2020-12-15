@@ -1,0 +1,13 @@
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\ReleaseRetention.deps.json
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\ReleaseRetention.dll
+C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetention.csproj.CoreCompileInputs.cache
+C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetention.AssemblyInfoInputs.cache
+C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetention.AssemblyInfo.cs
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\ReleaseRetention.pdb
+C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetention.dll
+C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetention.pdb
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\SampleData\deployments.json
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\SampleData\Environments.json
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\SampleData\Projects.json
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\SampleData\Releases.json
+C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetention.csprojAssemblyReference.cache
