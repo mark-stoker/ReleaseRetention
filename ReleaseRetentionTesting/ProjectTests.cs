@@ -127,6 +127,29 @@ namespace ReleaseRetentionTesting
 			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-2"), numberODeploymentsToKeep);
 		}
 
+		[Test]
+		public void NumberOfDeploymentsToReturn_UpdateNumberOfReleasesToNegativeNumber_NoDeploymentsForProjectReturned()
+		{
+			//Arrange
+			var projects = CreateTestData(out var environments, out var releases, out var deployments);
+
+			var project1 = new Project(projects.FirstOrDefault(), environments, releases, deployments);
+
+			//Act
+			var numberODeploymentsToKeep = -50;
+			project1.UpdateRetainedDeployedReleases(numberODeploymentsToKeep);
+
+			var result = project1.Deployments;
+
+			//Assert
+			Assert.AreEqual(false, result.Any(x => x.ReleaseId == "Release-1" && x.Id == "Deployment-1"));
+			Assert.AreEqual(false, result.Any(x => x.ReleaseId == "Release-1" && x.Id == "Deployment-3"));
+			Assert.AreEqual(false, result.Any(x => x.ReleaseId == "Release-2" && x.Id == "Deployment-2"));
+
+			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-1"), 0);
+			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-2"), 0);
+		}
+
 		private static List<IProject> CreateTestData(out List<IEnvironment> environments, out List<IRelease> releases, out List<IDeployment> deployments)
 		{
 			var projects = ConstructTestData.GetProjectsData();
