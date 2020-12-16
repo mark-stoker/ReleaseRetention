@@ -7,6 +7,8 @@ Class library to keep N of the most recent Releases/Deployments
 be reused as a Nuget package.
 * I have injected Ilogger into the the Projects class to log out why a release is kept, I have not wired up the Dependency Injection as this would
 be passed by the consumer of the library.
+* The brief stated no new UI and I have tried to prove it works through the Unit Tests. Howeve, I have added a small Console App to help give a better visual
+idea of how the Library works.
 
 ## Ideas for Improvements
 
