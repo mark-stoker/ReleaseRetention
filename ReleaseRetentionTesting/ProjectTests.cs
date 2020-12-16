@@ -10,7 +10,7 @@ namespace ReleaseRetentionTesting
 	public class ProjectTests
 	{
 		[Test]
-		public void NumberOfDeployedReleasesToReturn_NoActionTaken_ReturnsIntMaxValue()
+		public void DeployedReleasesToReturn_NoActionTaken_ReturnsIntMaxValue()
 		{
 			//Arrange and Act
 			var project = new Project();
@@ -20,7 +20,7 @@ namespace ReleaseRetentionTesting
 		}
 
 		[Test]
-		public void NumberOfDeployedReleasesToReturn_UpdateValue_NewValueIsReturned()
+		public void DeployedReleasesToReturn_UpdateNumberOfReleasesToReturn_NewValueIsReturned()
 		{
 			//Arrange
 			var projects = CreateTestData(out var environments, out var releases, out var deployments);
@@ -36,7 +36,7 @@ namespace ReleaseRetentionTesting
 		}
 
 		[Test]
-		public void NumberOfDeploymentsToReturn_Project1UpdateNumberOfReleasesToKeep_ProjectHasNMostRecentDeployments()
+		public void DeployedReleasesToReturn_Project1UpdatesToFirstMostRecentRelease_ReturnsTheTopMostRecentRelease()
 		{
 			//Arrange
 			var projects = CreateTestData(out var environments, out var releases, out var deployments);
@@ -47,19 +47,24 @@ namespace ReleaseRetentionTesting
 			var numberODeploymentsToKeep = 1;
 			project1.UpdateRetainedDeployedReleases(numberODeploymentsToKeep);
 
-			var result = project1.Deployments;
+			var releasesResult = project1.Releases;
+			var deploymentsResult = project1.Deployments;
 
 			//Assert
-			Assert.AreEqual(false, result.Any(x => x.ReleaseId == "Release-1" && x.Id == "Deployment-1"));
-			Assert.AreEqual(true, result.Any(x => x.ReleaseId == "Release-1" && x.Id == "Deployment-3"));
-			Assert.AreEqual(true, result.Any(x => x.ReleaseId == "Release-2" && x.Id == "Deployment-2"));
+			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-1"));
+			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-1"));
+			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-3"));
 
-			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-1"), numberODeploymentsToKeep);
-			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-2"), numberODeploymentsToKeep);
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-2"));
+			Assert.AreEqual(false, deploymentsResult.Any(x => x.Id == "Deployment-2"));
+
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-3"));
+
+			Assert.LessOrEqual(releasesResult.Count, numberODeploymentsToKeep);
 		}
 
 		[Test]
-		public void NumberOfDeploymentsToReturn_Project2UpdateNumberOfReleasesToKeep_ProjectHasNMostRecentDeployments()
+		public void DeployedReleasesToReturn_Project2SetsTop2ReleasesToKeep_Top2ReleasesAreReturned()
 		{
 			//Arrange
 			var projects = CreateTestData(out var environments, out var releases, out var deployments);
@@ -71,23 +76,28 @@ namespace ReleaseRetentionTesting
 			var numberODeploymentsToKeep = 2;
 			project2.UpdateRetainedDeployedReleases(numberODeploymentsToKeep);
 
-			var result = project2.Deployments;
+			var releasesResult = project2.Releases;
+			var deploymentsResult = project2.Deployments;
 
 			//Assert
-			Assert.AreEqual(true, result.Any(x => x.ReleaseId == "Release-5" && x.Id == "Deployment-5"));
-			//Deployment-2 is oldest in Release-6
-			Assert.AreEqual(false, result.Any(x => x.ReleaseId == "Release-6" && x.Id == "Deployment-6"));
-			Assert.AreEqual(true, result.Any(x => x.ReleaseId == "Release-6" && x.Id == "Deployment-7"));
-			Assert.AreEqual(true, result.Any(x => x.ReleaseId == "Release-6" && x.Id == "Deployment-9"));
-			Assert.AreEqual(true, result.Any(x => x.ReleaseId == "Release-7" && x.Id == "Deployment-8"));
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-4"));
 
-			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-5"), numberODeploymentsToKeep);
-			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-6"), numberODeploymentsToKeep);
-			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-7"), numberODeploymentsToKeep);
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-5"));
+			Assert.AreEqual(false, deploymentsResult.Any(x => x.Id == "Deployment-5"));
+
+			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-6")); //Has most recent deployment
+			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-6"));
+			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-7"));
+			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-9"));
+
+			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-7")); //Second most recent deployment
+			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-8"));
+
+			Assert.LessOrEqual(releasesResult.Count, numberODeploymentsToKeep);
 		}
 
 		[Test]
-		public void NumberOfDeploymentsToReturn_NumberOfReleasesToKeepZero_ReturnsNoDeployments()
+		public void DeployedReleasesToReturn_NumberOfReleasesToKeepZero_ReturnsNoDeployments()
 		{
 			//Arrange
 			var projects = CreateTestData(out var environments, out var releases, out var deployments);
@@ -98,14 +108,14 @@ namespace ReleaseRetentionTesting
 			var numberODeploymentsToKeep = 0;
 			project1.UpdateRetainedDeployedReleases(numberODeploymentsToKeep);
 
-			var result = project1.Deployments;
+			var releasesResult = project1.Releases;
 
 			//Assert
-			Assert.LessOrEqual(result.Count, numberODeploymentsToKeep);
+			Assert.LessOrEqual(releasesResult.Count, numberODeploymentsToKeep);
 		}
 
 		[Test]
-		public void NumberOfDeploymentsToReturn_UpdateNumberOfReleasesToRandomHighNumber_AllDeploymentsForProjectReturned()
+		public void DeployedReleasesToReturn_UpdateNumberOfReleasesToRandomHighNumber_AllReleasesForProjectReturned()
 		{
 			//Arrange
 			var projects = CreateTestData(out var environments, out var releases, out var deployments);
@@ -116,19 +126,24 @@ namespace ReleaseRetentionTesting
 			var numberODeploymentsToKeep = 1000;
 			project1.UpdateRetainedDeployedReleases(numberODeploymentsToKeep);
 
-			var result = project1.Deployments;
+			var releasesResult = project1.Releases;
+			var deploymentsResult = project1.Deployments;
 
 			//Assert
-			Assert.AreEqual(true, result.Any(x => x.ReleaseId == "Release-1" && x.Id == "Deployment-1"));
-			Assert.AreEqual(true, result.Any(x => x.ReleaseId == "Release-1" && x.Id == "Deployment-3"));
-			Assert.AreEqual(true, result.Any(x => x.ReleaseId == "Release-2" && x.Id == "Deployment-2"));
+			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-1"));
+			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-1"));
+			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-3"));
 
-			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-1"), numberODeploymentsToKeep);
-			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-2"), numberODeploymentsToKeep);
+			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-2"));
+			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-2"));
+
+			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-3"));
+
+			Assert.LessOrEqual(releasesResult.Count, numberODeploymentsToKeep);
 		}
 
 		[Test]
-		public void NumberOfDeploymentsToReturn_UpdateNumberOfReleasesToNegativeNumber_NoDeploymentsForProjectReturned()
+		public void DeployedReleasessToReturn_UpdateNumberOfReleasesToNegativeNumber_NoDeploymentsForProjectReturned()
 		{
 			//Arrange
 			var projects = CreateTestData(out var environments, out var releases, out var deployments);
@@ -139,15 +154,20 @@ namespace ReleaseRetentionTesting
 			var numberODeploymentsToKeep = -50;
 			project1.UpdateRetainedDeployedReleases(numberODeploymentsToKeep);
 
-			var result = project1.Deployments;
+			var releasesResult = project1.Deployments;
+			var deploymentsResult = project1.Deployments;
 
 			//Assert
-			Assert.AreEqual(false, result.Any(x => x.ReleaseId == "Release-1" && x.Id == "Deployment-1"));
-			Assert.AreEqual(false, result.Any(x => x.ReleaseId == "Release-1" && x.Id == "Deployment-3"));
-			Assert.AreEqual(false, result.Any(x => x.ReleaseId == "Release-2" && x.Id == "Deployment-2"));
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-1"));
+			Assert.AreEqual(false, deploymentsResult.Any(x => x.Id == "Deployment-1"));
+			Assert.AreEqual(false, deploymentsResult.Any(x => x.Id == "Deployment-3"));
 
-			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-1"), 0);
-			Assert.LessOrEqual(result.Count(x => x.ReleaseId == "Release-2"), 0);
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-2"));
+			Assert.AreEqual(false, deploymentsResult.Any(x => x.Id == "Deployment-2"));
+
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-3"));
+
+			Assert.LessOrEqual(releasesResult.Count, 0);
 		}
 
 		private static List<IProject> CreateTestData(out List<IEnvironment> environments, out List<IRelease> releases, out List<IDeployment> deployments)

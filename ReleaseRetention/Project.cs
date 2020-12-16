@@ -35,53 +35,53 @@ namespace ReleaseRetentionLibrary
 		public void UpdateRetainedDeployedReleases(int numberOfReleases)
 		{
 			_logger?.LogInformation($"The number of releases to keep has been changed to  {numberOfReleases}." +
-			                        $". Only the most recent releases will have been kept.");
+			                        $". Only the most recent deployed releases will have been kept.");
 
 			_releasesToKeep = numberOfReleases;
 			
-			RetainedDeployments();
+			RetainedReleases();
 		}
 
 		public int NumberRetainedDeployedReleases()
 		{
-			
 			return _releasesToKeep;
 		}
 
-		private IList<IDeployment> RetainedDeployments()
+		private IList<IRelease> RetainedReleases()
 		{
-			var nResults = FilterOutNResults();
-			
-			ReconstructDeployments(nResults);
+			//Ordered list of releases based on deployment date
+			//Filters out to the n top releases
+			var filteredReleases = Releases.GroupJoin(
+					Deployments,
+					release => release.Id,
+					deployment => deployment.ReleaseId,
+					(x, y) => new {Release = x, Deployments = y})
+				.SelectMany(
+					x => x.Deployments.DefaultIfEmpty(),
+					(x, y) => new {Releases = x.Release, Deployment = y})
+				.OrderByDescending(x => x.Deployment?.DeployedAt)
+				.GroupBy(x => x.Releases.Id)
+				.Take(_releasesToKeep).ToList();
 
-			return Deployments;
-		}
 
-		private void ReconstructDeployments(List<IEnumerable<IDeployment>> nResults)
-		{
-			Deployments.Clear();
+			var releaseId = new List<string>();
+			var deploymentId = new List<string>();
 
-			foreach (var item in nResults)
+			foreach (var releaseItem in filteredReleases)
 			{
-				foreach (var deployment in item)
+				releaseId.Add(releaseItem.Select(x => x.Releases.Id).FirstOrDefault());
+
+				foreach (var deploymentItem in releaseItem.Select(x => x.Deployment))
 				{
-					Deployments.Add(deployment);
+					if (deploymentItem != null)
+						deploymentId.Add(deploymentItem?.Id);
 				}
 			}
-		}
 
-		private List<IEnumerable<IDeployment>> FilterOutNResults()
-		{
-			var nResults = Deployments
-				//Group by release id
-				.GroupBy(deployment => deployment.ReleaseId)
-				//Order by date desc
-				.Select(grp =>
-					grp.OrderByDescending(deployment => deployment.DeployedAt)
-						//Take the n top records from list
-						.Take(_releasesToKeep)
-				).ToList();
-			return nResults;
+			Releases = Releases.Where(x => releaseId.Contains(x.Id)).ToList();
+			Deployments = Deployments.Where(x => deploymentId.Contains(x.Id)).ToList();
+
+			return Releases;
 		}
 
 		private void CreateProjectReleases(IList<IRelease> releases)

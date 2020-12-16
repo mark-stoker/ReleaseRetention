@@ -6,3 +6,7 @@ C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetenti
 C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.AssemblyInfo.cs
 C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.dll
 C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.pdb
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\nunit.framework.dll
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\nunit.framework.pdb
+C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\nunit.framework.xml
+C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.csproj.CopyComplete
