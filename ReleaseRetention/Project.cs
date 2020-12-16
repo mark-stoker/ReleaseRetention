@@ -32,14 +32,14 @@ namespace ReleaseRetentionLibrary
 				
 		}
 
-		public void UpdateRetainedDeployedReleases(int numberOfReleases)
+		public IList<IRelease> UpdateRetainedDeployedReleases(int numberOfReleases)
 		{
 			_logger?.LogInformation($"The number of releases to keep has been changed to  {numberOfReleases}." +
 			                        $". Only the most recent deployed releases will have been kept.");
 
 			_releasesToKeep = numberOfReleases;
 			
-			RetainedReleases();
+			return RetainedReleases();
 		}
 
 		public int NumberRetainedDeployedReleases()

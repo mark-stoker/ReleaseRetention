@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ReleaseRetentionLibrary.Interfaces
+﻿namespace ReleaseRetentionLibrary.Interfaces
 {
 	public interface IRelease
 	{

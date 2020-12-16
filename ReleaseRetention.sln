@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseRetentionLibrary", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseRetentionTesting", "ReleaseRetentionTesting\ReleaseRetentionTesting.csproj", "{EE721BB4-6A9C-470E-82BB-5697050F2BDD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManualTestReleaseRetentionLibrary", "ManualTestReleaseRetentionLibrary\ManualTestReleaseRetentionLibrary.csproj", "{3E74FFEF-8607-438D-BD5D-5E6EF7563A2E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{EE721BB4-6A9C-470E-82BB-5697050F2BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE721BB4-6A9C-470E-82BB-5697050F2BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE721BB4-6A9C-470E-82BB-5697050F2BDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E74FFEF-8607-438D-BD5D-5E6EF7563A2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E74FFEF-8607-438D-BD5D-5E6EF7563A2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E74FFEF-8607-438D-BD5D-5E6EF7563A2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E74FFEF-8607-438D-BD5D-5E6EF7563A2E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
