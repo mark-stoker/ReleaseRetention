@@ -49,9 +49,20 @@ namespace ReleaseRetentionLibrary
 
 		private IList<IRelease> RetainedReleases()
 		{
-			//Ordered list of releases based on deployment date
-			//Filters out to the n top releases
-			var filteredReleases = Releases.GroupJoin(
+			var releaseId = new List<string>();
+			var deploymentId = new List<string>();
+
+			FilterReleasesByN(releaseId, deploymentId);
+
+			Releases = Releases.Where(x => releaseId.Contains(x.Id)).ToList();
+			Deployments = Deployments.Where(x => deploymentId.Contains(x.Id)).ToList();
+
+			return Releases;
+		}
+
+		private void FilterReleasesByN(List<string> releaseId, List<string> deploymentId)
+		{
+			foreach (var releaseItem in Releases.GroupJoin(
 					Deployments,
 					release => release.Id,
 					deployment => deployment.ReleaseId,
@@ -61,13 +72,7 @@ namespace ReleaseRetentionLibrary
 					(x, y) => new {Releases = x.Release, Deployment = y})
 				.OrderByDescending(x => x.Deployment?.DeployedAt)
 				.GroupBy(x => x.Releases.Id)
-				.Take(_releasesToKeep).ToList();
-
-
-			var releaseId = new List<string>();
-			var deploymentId = new List<string>();
-
-			foreach (var releaseItem in filteredReleases)
+				.Take(_releasesToKeep).ToList())
 			{
 				releaseId.Add(releaseItem.Select(x => x.Releases.Id).FirstOrDefault());
 
@@ -77,11 +82,6 @@ namespace ReleaseRetentionLibrary
 						deploymentId.Add(deploymentItem?.Id);
 				}
 			}
-
-			Releases = Releases.Where(x => releaseId.Contains(x.Id)).ToList();
-			Deployments = Deployments.Where(x => deploymentId.Contains(x.Id)).ToList();
-
-			return Releases;
 		}
 
 		private void CreateProjectReleases(IList<IRelease> releases)

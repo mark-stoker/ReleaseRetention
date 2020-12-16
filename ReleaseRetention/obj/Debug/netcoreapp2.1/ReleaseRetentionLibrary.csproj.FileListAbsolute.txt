@@ -10,3 +10,4 @@ C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\nunit.framewor
 C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\nunit.framework.pdb
 C:\Code\ReleaseRetention\ReleaseRetention\bin\Debug\netcoreapp2.1\nunit.framework.xml
 C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.csproj.CopyComplete
+C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.csprojAssemblyReference.cache
