@@ -8,7 +8,7 @@ be reused as a Nuget package.
 * I have injected Ilogger into the the Projects class to log out why a release is kept, I have not wired up the Dependency Injection as this would
 be passed by the consumer of the library.
 
-## Ideas and Improvements
+## Ideas for Improvements
 
 * Check a release is for a valid project and environment, the test data contained Deployments -> Project-3 and Releases -> Envrionment-3.
 * Check for invlaid (e.g. 1.0.1-ci1) and null version numbers
