@@ -3,7 +3,7 @@ Class library to keep N of the most recent Releases/Deployments
 
 ## Design Decisions and Assumption
 
-*I have created the main project as a Class library, this fits the brief of it being a reusable and testable component. It can also then
+* I have created the main project as a Class library, this fits the brief of it being a reusable and testable component. It can also then
 be reused as a Nuget package.
 * I have injected Ilogger into the the Projects class to log out why a release is kept, I have not wired up the Dependency Injection as this would
 be passed by the consumer of the library.
