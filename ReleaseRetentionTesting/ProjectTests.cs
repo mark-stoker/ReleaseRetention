@@ -97,7 +97,7 @@ namespace ReleaseRetentionTesting
 		}
 
 		[Test]
-		public void DeployedReleasesToReturn_NumberOfReleasesToKeepZero_ReturnsNoDeployments()
+		public void DeployedReleasesToReturn_NumberOfReleasesToKeepZero_ReturnsNoReleases()
 		{
 			//Arrange
 			var projects = CreateTestData(out var environments, out var releases, out var deployments);
@@ -167,7 +167,7 @@ namespace ReleaseRetentionTesting
 
 			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-3"));
 
-			Assert.LessOrEqual(releasesResult.Count, 0);
+			Assert.AreEqual(releasesResult.Count, 0);
 		}
 
 		private static List<IProject> CreateTestData(out List<IEnvironment> environments, out List<IRelease> releases, out List<IDeployment> deployments)

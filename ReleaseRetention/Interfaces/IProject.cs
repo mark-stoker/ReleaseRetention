@@ -10,7 +10,7 @@ namespace ReleaseRetentionLibrary.Interfaces
 		IList<IRelease> Releases { get; set; }
 		IList<IDeployment> Deployments { get; set; }
 
-		IList<IRelease> UpdateRetainedDeployedReleases(int numberOfReleases);
+		IList<IRelease> UpdateRetainedDeployedReleases(int numberOfReleases, string environment);
 		int NumberRetainedDeployedReleases();
 	}
 }

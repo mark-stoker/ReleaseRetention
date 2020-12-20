@@ -32,14 +32,14 @@ namespace ReleaseRetentionLibrary
 				
 		}
 
-		public IList<IRelease> UpdateRetainedDeployedReleases(int numberOfReleases)
+		public IList<IRelease> UpdateRetainedDeployedReleases(int numberOfReleases, string environment)
 		{
 			_logger?.LogInformation($"The number of releases to keep has been changed to  {numberOfReleases}." +
 			                        $". Only the most recent deployed releases will have been kept.");
 
 			_releasesToKeep = numberOfReleases;
 			
-			return RetainedReleases();
+			return RetainedReleases(environment);
 		}
 
 		public int NumberRetainedDeployedReleases()
@@ -47,12 +47,12 @@ namespace ReleaseRetentionLibrary
 			return _releasesToKeep;
 		}
 
-		private IList<IRelease> RetainedReleases()
+		private IList<IRelease> RetainedReleases(string environment)
 		{
 			var releaseIds = new List<string>();
 			var deploymentIds = new List<string>();
 
-			FilterReleasesByN(releaseIds, deploymentIds);
+			FilterReleasesByN(releaseIds, deploymentIds, environment);
 
 			Releases = Releases.Where(x => releaseIds.Contains(x.Id)).ToList();
 			Deployments = Deployments.Where(x => deploymentIds.Contains(x.Id)).ToList();
@@ -60,10 +60,11 @@ namespace ReleaseRetentionLibrary
 			return Releases;
 		}
 
-		private void FilterReleasesByN(List<string> releaseIds, List<string> deploymentIds)
+		//Update this functionality to include EnvironmentId
+		private void FilterReleasesByN(List<string> releaseIds, List<string> deploymentIds, string environment)
 		{
 			foreach (var releaseItem in Releases.GroupJoin(
-					Deployments,
+					Deployments.Where(x => x.EnvironmentId == environment),
 					release => release.Id,
 					deployment => deployment.ReleaseId,
 					(x, y) => new {Release = x, Deployments = y})
