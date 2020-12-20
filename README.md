@@ -15,7 +15,7 @@ idea of how the Library works.
 * Check for invlaid (e.g. 1.0.1-ci1) and null version numbers.
 * Validation on datetime, the next release must not be before the previous one.
 * Currently the Retention algorithm does not take into account Environment, this could be extended to be included.
-** This would break all the tests.
-** Consider abstracting _releasesToKeep to own Class with reference to Environment.
+  * This would break all the tests.
+  * Consider abstracting _releasesToKeep to own Class with reference to Environment.
 * Create an Indexer on the Retention Class
 * Remove filter in Retention Class to include orphan objects e.g. 'Release-8' and 'Deployment-10'
