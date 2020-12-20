@@ -33,10 +33,10 @@ namespace ReleaseRetentionTesting
 			//Act
 			var expected = environments.Count;
 			var project1Environments =
-				releaseRetention.Projects.Where(x => x.Id == "Project-1").SelectMany(x => x.Environments).Count();
+				releaseRetention["Project-1"].Environments.Count();
 
 			var project2Environments = 
-				releaseRetention.Projects.Where(x => x.Id == "Project-2").SelectMany(x => x.Environments).Count();
+				releaseRetention["Project-2"].Environments.Count;
 
 			//Assert
 			Assert.AreEqual(expected, project1Environments);
@@ -54,11 +54,11 @@ namespace ReleaseRetentionTesting
 			//Act
 			var project1ExpectedReleases = 3;
 			var project1Releases =
-				releaseRetention.Projects.Where(x => x.Id == "Project-1").SelectMany(x => x.Releases).Count();
+				releaseRetention["Project-1"].Releases.Count();
 
 			var project2ExpectedReleases = 4;
 			var project2Releases =
-				releaseRetention.Projects.Where(x => x.Id == "Project-2").SelectMany(x => x.Releases).Count();
+				releaseRetention["Project-2"].Releases.Count();
 
 			//Assert, One release was discounted because it was for 'Project-3'
 			Assert.AreEqual(project1ExpectedReleases, project1Releases);
@@ -76,11 +76,11 @@ namespace ReleaseRetentionTesting
 			//Act
 			var project1ExpectedDeployments = 3; //Deployment-4 is for an incorrect EnvironmentId
 			var project1Deployments =
-				releaseRetention.Projects.Where(x => x.Id == "Project-1").SelectMany(x => x.Deployments).Count();
+				releaseRetention["Project-1"].Deployments.Count();
 
 			var project2ExpectedDeployments = 5; //Deployment-8 is for release with invalid ProjectId
 			var project2Deployments =
-				releaseRetention.Projects.Where(x => x.Id == "Project-2").SelectMany(x => x.Deployments).Count();
+				releaseRetention["Project-2"].Deployments.Count();
 
 			Assert.AreEqual(project1ExpectedDeployments, project1Deployments);
 			Assert.AreEqual(project2ExpectedDeployments, project2Deployments);

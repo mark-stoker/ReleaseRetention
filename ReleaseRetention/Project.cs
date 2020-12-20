@@ -49,18 +49,18 @@ namespace ReleaseRetentionLibrary
 
 		private IList<IRelease> RetainedReleases()
 		{
-			var releaseId = new List<string>();
-			var deploymentId = new List<string>();
+			var releaseIds = new List<string>();
+			var deploymentIds = new List<string>();
 
-			FilterReleasesByN(releaseId, deploymentId);
+			FilterReleasesByN(releaseIds, deploymentIds);
 
-			Releases = Releases.Where(x => releaseId.Contains(x.Id)).ToList();
-			Deployments = Deployments.Where(x => deploymentId.Contains(x.Id)).ToList();
+			Releases = Releases.Where(x => releaseIds.Contains(x.Id)).ToList();
+			Deployments = Deployments.Where(x => deploymentIds.Contains(x.Id)).ToList();
 
 			return Releases;
 		}
 
-		private void FilterReleasesByN(List<string> releaseId, List<string> deploymentId)
+		private void FilterReleasesByN(List<string> releaseIds, List<string> deploymentIds)
 		{
 			foreach (var releaseItem in Releases.GroupJoin(
 					Deployments,
@@ -74,12 +74,12 @@ namespace ReleaseRetentionLibrary
 				.GroupBy(x => x.Releases.Id)
 				.Take(_releasesToKeep).ToList())
 			{
-				releaseId.Add(releaseItem.Select(x => x.Releases.Id).FirstOrDefault());
+				releaseIds.Add(releaseItem.Select(x => x.Releases.Id).FirstOrDefault());
 
 				foreach (var deploymentItem in releaseItem.Select(x => x.Deployment))
 				{
 					if (deploymentItem != null)
-						deploymentId.Add(deploymentItem?.Id);
+						deploymentIds.Add(deploymentItem?.Id);
 				}
 			}
 		}

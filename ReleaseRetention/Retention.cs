@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ReleaseRetentionLibrary.Interfaces;
 
 namespace ReleaseRetentionLibrary
@@ -12,6 +13,10 @@ namespace ReleaseRetentionLibrary
 		{
 			CreateProjectList(projects, environments, releases, deployments);
 		}
+
+		public Project this[string projectId] => (Project) (from p in Projects
+			where p.Id == projectId
+			select p).First();
 
 		private void CreateProjectList(IList<IProject> projects, IList<IEnvironment> environments,
 			IList<IRelease> releases, IList<IDeployment> deployments)
