@@ -10,3 +10,4 @@ C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetenti
 C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.csproj.CopyComplete
 C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.dll
 C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.pdb
+C:\Code\ReleaseRetention\ReleaseRetention\obj\Debug\netcoreapp2.1\ReleaseRetentionLibrary.csprojAssemblyReference.cache
