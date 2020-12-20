@@ -13,6 +13,7 @@ idea of how the Library works.
 ## Ideas for Improvements
 
 * Check a release is for a valid project and environment, the test data contained Deployments -> Project-3 and Releases -> Envrionment-3.
-* Check for invlaid (e.g. 1.0.1-ci1) and null version numbers
-* Validation on datetime, the next release must not be before the previous one
+* Check for invlaid (e.g. 1.0.1-ci1) and null version numbers.
+* Validation on datetime, the next release must not be before the previous one.
+* Currently the Retention algorithm does not take into account Environment, this could be extended to be included.
 
