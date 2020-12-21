@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using ReleaseRetentionLibrary.Interfaces;
@@ -13,18 +12,22 @@ namespace ReleaseRetentionLibrary
 		public IList<IEnvironment> Environments { get; set; }
 		public IList<IRelease> Releases { get; set; }
 		public IList<IDeployment> Deployments { get; set; }
+		private IList<IReleaseToKeep> ReleasesToKeep { get; set; }
 
 		private readonly ILogger<Project> _logger;
-		private int _releasesToKeep = Int32.MaxValue;
+		
+		//private int _releasesToKeep = Int32.MaxValue;
 
 		public Project(IProject project, IList<IEnvironment> environments, IList<IRelease> releases, IList<IDeployment> deployments, ILogger<Project> logger = null)
 		{
-			_logger = logger;
+			
 			Id = project.Id;
 			Name = project.Name;
 			Environments = environments;
 			CreateProjectReleases(releases);
 			CreateProjectDeployments(deployments);
+			_logger = logger;
+			ReleasesToKeep = new List<IReleaseToKeep>() { new ReleaseToKeep() };
 		}
 
 		public Project()
@@ -37,22 +40,28 @@ namespace ReleaseRetentionLibrary
 			_logger?.LogInformation($"The number of releases to keep has been changed to  {numberOfReleases}." +
 			                        $". Only the most recent deployed releases will have been kept.");
 
-			_releasesToKeep = numberOfReleases;
+			var releaseToKeep = new ReleaseToKeep
+			{
+				NReleasesToKeep = numberOfReleases,
+				Environment = environment
+			};
+
+			ReleasesToKeep.Add(releaseToKeep);
 			
-			return RetainedReleases(environment);
+			return RetainedReleases();
 		}
 
 		public int NumberRetainedDeployedReleases()
 		{
-			return _releasesToKeep;
+			return ReleasesToKeep.LastOrDefault().NReleasesToKeep;
 		}
 
-		private IList<IRelease> RetainedReleases(string environment)
+		private IList<IRelease> RetainedReleases()
 		{
 			var releaseIds = new List<string>();
 			var deploymentIds = new List<string>();
 
-			FilterReleasesByN(releaseIds, deploymentIds, environment);
+			FilterReleasesByN(releaseIds, deploymentIds);
 
 			Releases = Releases.Where(x => releaseIds.Contains(x.Id)).ToList();
 			Deployments = Deployments.Where(x => deploymentIds.Contains(x.Id)).ToList();
@@ -61,10 +70,10 @@ namespace ReleaseRetentionLibrary
 		}
 
 		//Update this functionality to include EnvironmentId
-		private void FilterReleasesByN(List<string> releaseIds, List<string> deploymentIds, string environment)
+		private void FilterReleasesByN(List<string> releaseIds, List<string> deploymentIds)
 		{
 			foreach (var releaseItem in Releases.GroupJoin(
-					Deployments.Where(x => x.EnvironmentId == environment),
+					Deployments.Where(x => x.EnvironmentId == ReleasesToKeep.LastOrDefault()?.Environment),
 					release => release.Id,
 					deployment => deployment.ReleaseId,
 					(x, y) => new {Release = x, Deployments = y})
@@ -73,7 +82,7 @@ namespace ReleaseRetentionLibrary
 					(x, y) => new {Releases = x.Release, Deployment = y})
 				.OrderByDescending(x => x.Deployment?.DeployedAt)
 				.GroupBy(x => x.Releases.Id)
-				.Take(_releasesToKeep).ToList())
+				.Take(ReleasesToKeep.LastOrDefault().NReleasesToKeep).ToList())
 			{
 				releaseIds.Add(releaseItem.Select(x => x.Releases.Id).FirstOrDefault());
 

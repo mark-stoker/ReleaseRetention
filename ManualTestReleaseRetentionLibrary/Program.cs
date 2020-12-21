@@ -113,7 +113,9 @@ namespace ManualTestReleaseRetentionLibrary
 			{
 				Console.WriteLine("Enter the new Release Retention for the selected project.");
 				var releaseRetentionNumber = Convert.ToInt32(Console.ReadLine());
-				_selectedProject.UpdateRetainedDeployedReleases(releaseRetentionNumber);
+				Console.WriteLine("Enter the Environment you wish this to apply for.");
+				var environment = Convert.ToString(Console.ReadLine());
+				_selectedProject.UpdateRetainedDeployedReleases(releaseRetentionNumber, environment);
 				Console.WriteLine();
 				Console.WriteLine();
 				Console.WriteLine($"The new release retention number is: "
