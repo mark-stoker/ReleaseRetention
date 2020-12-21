@@ -1,7 +1,7 @@
 ## ReleaseRetention
 Class library to keep N of the most recent Releases based on the the most recent Deployment dates.
 
-## Design Decisions and Assumption
+## Design Decisions and Assumptions
 
 * I have created the main project as a Class library, this fits the brief of it being a reusable and testable component. It can also then
 be reused as a Nuget package.
