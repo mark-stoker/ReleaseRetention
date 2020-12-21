@@ -78,7 +78,7 @@ namespace ReleaseRetentionLibrary
 					deployment => deployment.ReleaseId,
 					(x, y) => new {Release = x, Deployments = y})
 				.SelectMany(
-					x => x.Deployments.DefaultIfEmpty(),
+					x => x.Deployments, 
 					(x, y) => new {Releases = x.Release, Deployment = y})
 				.OrderByDescending(x => x.Deployment?.DeployedAt)
 				.GroupBy(x => x.Releases.Id)

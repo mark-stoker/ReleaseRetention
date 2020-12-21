@@ -166,7 +166,7 @@ namespace ReleaseRetentionTesting
 
 			//Assert
 			//Included because left outer join
-			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-4"));
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-4"));
 
 			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-5"));
 			Assert.AreEqual(false, deploymentsResult.Any(x => x.Id == "Deployment-5"));
@@ -245,7 +245,7 @@ namespace ReleaseRetentionTesting
 			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-2"));
 			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-2"));
 
-			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-3"));
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-3"));
 
 			Assert.LessOrEqual(releasesResult.Count, numberODeploymentsToKeep);
 		}
@@ -271,10 +271,10 @@ namespace ReleaseRetentionTesting
 			Assert.AreEqual(false, deploymentsResult.Any(x => x.Id == "Deployment-1"));
 			Assert.AreEqual(true, deploymentsResult.Any(x => x.Id == "Deployment-3"));
 
-			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-2"));
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-2"));
 			Assert.AreEqual(false, deploymentsResult?.Any(x => x.Id == "Deployment-2"));
 
-			Assert.AreEqual(true, releasesResult.Any(x => x.Id == "Release-3"));
+			Assert.AreEqual(false, releasesResult.Any(x => x.Id == "Release-3"));
 
 			Assert.LessOrEqual(releasesResult.Count, numberODeploymentsToKeep);
 		}
